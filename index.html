@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RSC Bhuj – Science Explorer Quiz</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans',Arial,sans-serif;background:#f0f2f5;color:#1a1a1a;min-height:100vh;}
+
+/* ── HEADER ── */
+.gov-header{background:linear-gradient(135deg,#1a237e 0%,#283593 60%,#1565c0 100%);box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.gov-header-top{background:#fff;padding:8px 20px;display:flex;align-items:center;gap:16px;border-bottom:3px solid #ff6f00;}
+.gov-emblem{font-size:2.2rem;width:52px;height:52px;display:flex;align-items:center;justify-content:center;}
+.gov-title-block h1{font-size:1rem;font-weight:700;color:#1a237e;}
+.gov-title-block p{font-size:0.72rem;color:#555;}
+.gov-nav{padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.gov-nav-title{color:#fff;font-size:1rem;font-weight:600;}
+.gov-nav-right{color:rgba(255,255,255,0.85);font-size:0.78rem;}
+.admin-link{color:rgba(255,255,255,0.5);font-size:0.7rem;cursor:pointer;text-decoration:underline;margin-left:12px;}
+.admin-link:hover{color:#fff;}
+
+/* ── SCREENS ── */
+.screen{display:none;}.screen.active{display:block;}
+
+/* ── PORTAL ── */
+.portal-body{max-width:900px;margin:0 auto;padding:28px 16px;}
+.hero-card{background:#fff;border-radius:8px;padding:28px 24px;text-align:center;margin-bottom:24px;border:1px solid #ddd;}
+.hero-card h2{font-size:1.3rem;font-weight:700;color:#1a237e;margin-bottom:8px;}
+.hero-card p{font-size:0.88rem;color:#555;line-height:1.7;}
+.section-title{font-size:1rem;font-weight:700;color:#1a237e;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #1a237e;}
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.gal-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:20px;text-decoration:none;color:inherit;transition:all 0.2s;display:block;border-left:5px solid;}
+.gal-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.12);}
+.gal-card-icon{font-size:2.2rem;margin-bottom:8px;}
+.gal-card-num{font-size:0.72rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}
+.gal-card-name{font-size:1rem;font-weight:700;color:#1a237e;margin-bottom:5px;}
+.gal-card-info{font-size:0.78rem;color:#666;}
+.footer-bar{background:#1a237e;color:rgba(255,255,255,0.8);text-align:center;padding:14px;font-size:0.75rem;border-radius:4px;}
+
+/* ── QUIZ LANDING ── */
+.quiz-land-body{max-width:900px;margin:0 auto;padding:24px 16px;}
+.notice-box{background:#fff3e0;border:1px solid #ffb300;border-left:5px solid #ff6f00;border-radius:4px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;}
+.notice-box .ni{font-size:1.2rem;margin-top:2px;}
+.notice-box p{font-size:0.82rem;color:#5d4037;line-height:1.6;}
+.notice-box strong{color:#e65100;}
+.info-card{background:#fff;border:1px solid #ddd;border-radius:6px;padding:20px;margin-bottom:20px;}
+.info-card h2{font-size:1rem;font-weight:700;color:#1a237e;border-bottom:2px solid #1a237e;padding-bottom:8px;margin-bottom:14px;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.info-item{background:#f8f9ff;border:1px solid #e3e8ff;border-radius:4px;padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.info-item .iicon{font-size:1.4rem;}.info-item .ilabel{font-size:0.72rem;color:#666;}.info-item .ival{font-size:0.88rem;color:#1a237e;font-weight:700;}
+.form-card{background:#fff;border:1px solid #ddd;border-radius:6px;padding:20px;margin-bottom:20px;}
+.form-card h2{font-size:1rem;font-weight:700;color:#1a237e;border-bottom:2px solid #1a237e;padding-bottom:8px;margin-bottom:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;color:#333;margin-bottom:5px;}
+.form-group label span{color:#c62828;}
+.form-group input{width:100%;border:1px solid #bbb;border-radius:3px;padding:8px 10px;font-family:inherit;font-size:0.88rem;outline:none;transition:border-color 0.2s;}
+.form-group input:focus{border-color:#1a237e;box-shadow:0 0 0 3px rgba(26,35,126,0.1);}
+.checkbox-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;padding:12px;background:#f8f9ff;border:1px solid #c5cae9;border-radius:4px;}
+.checkbox-row input[type=checkbox]{width:16px;height:16px;margin-top:2px;accent-color:#1a237e;}
+.checkbox-row label{font-size:0.8rem;color:#333;line-height:1.5;cursor:pointer;}
+.btn-start{background:linear-gradient(135deg,#1a237e,#1565c0);color:#fff;border:none;border-radius:4px;padding:12px 40px;font-family:inherit;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 8px rgba(26,35,126,0.3);}
+.btn-start:hover{transform:translateY(-1px);}
+.back-btn{background:none;border:1px solid #ccc;border-radius:4px;padding:7px 16px;font-family:inherit;font-size:0.82rem;cursor:pointer;color:#555;margin-bottom:16px;}
+.back-btn:hover{background:#f5f5f5;}
+
+/* ── QUIZ ── */
+.quiz-body{max-width:900px;margin:0 auto;padding:20px 16px;}
+.quiz-progress-bar{background:#fff;border:1px solid #ddd;border-radius:4px;padding:14px 18px;margin-bottom:16px;}
+.qpb-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;}
+.qpb-gal{font-size:0.85rem;font-weight:700;color:#1a237e;}
+.qpb-count{font-size:0.78rem;color:#555;font-weight:600;}
+.qpb-timer{font-size:0.85rem;font-weight:700;background:#1a237e;color:#fff;padding:3px 10px;border-radius:3px;}
+.qpb-timer.warning{background:#c62828;}
+.progress-track{background:#e8eaf6;border-radius:100px;height:8px;}
+.progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#1a237e,#1565c0);transition:width 0.4s;}
+.q-card{background:#fff;border:1px solid #ddd;border-radius:4px;padding:24px;margin-bottom:16px;}
+.q-card-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #eee;}
+.q-num-badge{background:#1a237e;color:#fff;border-radius:3px;padding:3px 10px;font-size:0.78rem;font-weight:700;}
+.q-diff-badge{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:3px;}
+.qd-easy{background:#e8f5e9;color:#2e7d32;}.qd-medium{background:#fff3e0;color:#e65100;}.qd-hard{background:#fce4ec;color:#c62828;}
+.q-pts{font-size:0.72rem;color:#666;margin-left:auto;font-weight:600;}
+.q-text{font-size:1rem;font-weight:600;color:#1a1a1a;line-height:1.65;margin-bottom:20px;}
+.options-list{display:flex;flex-direction:column;gap:0;}
+.option-item{display:flex;align-items:center;border:1px solid #ddd;border-top:none;cursor:pointer;transition:background 0.15s;}
+.option-item:first-child{border-top:1px solid #ddd;border-radius:3px 3px 0 0;}
+.option-item:last-child{border-radius:0 0 3px 3px;}
+.option-item:hover:not(.disabled){background:#e8eaf6;}
+.opt-label{background:#e8eaf6;color:#1a237e;font-size:0.88rem;font-weight:700;padding:13px 14px;min-width:42px;text-align:center;border-right:1px solid #ddd;flex-shrink:0;}
+.opt-text{padding:13px 16px;font-size:0.9rem;color:#1a1a1a;line-height:1.45;flex:1;}
+.option-item.correct{background:#e8f5e9 !important;border-color:#388e3c !important;}
+.option-item.correct .opt-label{background:#388e3c !important;color:#fff !important;}
+.option-item.correct .opt-text{color:#1b5e20;font-weight:600;}
+.option-item.wrong{background:#fce4ec !important;border-color:#c62828 !important;}
+.option-item.wrong .opt-label{background:#c62828 !important;color:#fff !important;}
+.option-item.wrong .opt-text{color:#b71c1c;font-weight:600;}
+.option-item.disabled{cursor:default;}
+.next-hint{text-align:center;padding:14px;font-size:0.8rem;color:#666;font-style:italic;display:none;}
+.next-hint.show{display:block;}
+.gal-result{background:#fff;border:1px solid #ddd;border-radius:4px;padding:28px;margin-bottom:16px;text-align:center;}
+.gal-score-big{font-size:3rem;font-weight:700;color:#1a237e;line-height:1;margin:10px 0 4px;}
+.gal-score-sub{font-size:0.85rem;color:#666;margin-bottom:16px;}
+.score-breakdown{display:flex;justify-content:center;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
+.sb-item{background:#f8f9ff;border:1px solid #e3e8ff;border-radius:4px;padding:10px 18px;text-align:center;min-width:90px;}
+.sb-label{font-size:0.72rem;color:#666;font-weight:600;margin-bottom:4px;}
+.sb-val{font-size:1.1rem;font-weight:700;color:#1a237e;}
+.btn-cert{background:linear-gradient(135deg,#1a237e,#1565c0);color:#fff;border:none;border-radius:4px;padding:11px 32px;font-family:inherit;font-size:0.92rem;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(26,35,126,0.25);transition:all 0.2s;}
+.btn-cert:hover{transform:translateY(-1px);}
+
+/* ── THANKYOU ── */
+.ty-body{max-width:900px;margin:0 auto;padding:24px 16px;}
+.ty-card{background:#fff;border:1px solid #ddd;border-radius:4px;padding:32px 24px;text-align:center;margin-bottom:20px;}
+.ty-icon{font-size:4rem;margin-bottom:12px;}
+.ty-title{font-size:1.4rem;font-weight:700;color:#1a237e;margin-bottom:6px;}
+.ty-sub{font-size:0.9rem;color:#555;margin-bottom:24px;line-height:1.6;}
+.final-score-row{display:flex;justify-content:center;gap:20px;margin-bottom:24px;flex-wrap:wrap;}
+.fs-box{background:#f8f9ff;border:2px solid #c5cae9;border-radius:6px;padding:14px 24px;text-align:center;min-width:120px;}
+.fs-label{font-size:0.72rem;color:#666;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+.fs-val{font-size:1.6rem;font-weight:700;color:#1a237e;}
+.btn-dl{background:linear-gradient(135deg,#e65100,#ff6f00);color:#fff;border:none;border-radius:4px;padding:12px 36px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(230,81,0,0.35);transition:all 0.2s;margin-top:8px;}
+.btn-dl:hover{transform:translateY(-2px);}
+.cert-preview-wrap{background:#fff;border:1px solid #ddd;border-radius:4px;padding:16px;}
+.cert-preview-title{font-size:0.85rem;font-weight:700;color:#1a237e;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee;}
+canvas#certCanvas{width:100%;border-radius:4px;border:1px solid #eee;}
+.cp{position:fixed;pointer-events:none;z-index:9999;border-radius:2px;animation:cpfall linear forwards;}
+@keyframes cpfall{0%{transform:translateY(-10px) rotate(0);opacity:1;}100%{transform:translateY(110vh) rotate(540deg);opacity:0;}}
+
+/* ── ADMIN LOGIN ── */
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:center;justify-content:center;display:none;}
+.admin-overlay.show{display:flex;}
+.admin-login-box{background:#fff;border-radius:10px;padding:36px 32px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,0.3);}
+.admin-login-box h2{font-size:1.1rem;font-weight:700;color:#1a237e;margin-bottom:6px;text-align:center;}
+.admin-login-box p{font-size:0.8rem;color:#666;text-align:center;margin-bottom:24px;}
+.admin-login-box input{width:100%;border:1.5px solid #ccc;border-radius:6px;padding:10px 14px;font-family:inherit;font-size:0.95rem;margin-bottom:14px;outline:none;}
+.admin-login-box input:focus{border-color:#1a237e;}
+.btn-admin-login{width:100%;background:linear-gradient(135deg,#1a237e,#1565c0);color:#fff;border:none;border-radius:6px;padding:11px;font-family:inherit;font-size:0.95rem;font-weight:700;cursor:pointer;}
+.btn-admin-cancel{width:100%;background:none;border:1px solid #ccc;border-radius:6px;padding:9px;font-family:inherit;font-size:0.85rem;cursor:pointer;color:#666;margin-top:8px;}
+.admin-error{color:#c62828;font-size:0.8rem;text-align:center;margin-bottom:10px;display:none;}
+.admin-error.show{display:block;}
+
+/* ── ADMIN PANEL ── */
+#screen-admin{background:#f0f2f5;min-height:100vh;}
+.admin-header{background:linear-gradient(135deg,#b71c1c,#c62828);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.admin-header h1{color:#fff;font-size:1rem;font-weight:700;}
+.btn-logout{background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:4px;padding:6px 16px;font-family:inherit;font-size:0.82rem;cursor:pointer;}
+.btn-logout:hover{background:rgba(255,255,255,0.3);}
+.admin-body{max-width:1000px;margin:0 auto;padding:24px 16px;}
+.admin-section{background:#fff;border:1px solid #ddd;border-radius:8px;padding:22px;margin-bottom:20px;}
+.admin-section h2{font-size:0.95rem;font-weight:700;color:#1a237e;border-bottom:2px solid #1a237e;padding-bottom:8px;margin-bottom:16px;}
+.gallery-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.gtab{padding:8px 16px;border:2px solid #ddd;border-radius:20px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;background:#fff;}
+.gtab.active{border-color:#1a237e;background:#1a237e;color:#fff;}
+.q-edit-card{background:#f8f9ff;border:1px solid #e3e8ff;border-radius:6px;padding:16px;margin-bottom:12px;}
+.q-edit-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.q-edit-num{background:#1a237e;color:#fff;border-radius:3px;padding:2px 10px;font-size:0.75rem;font-weight:700;}
+.diff-select{font-size:0.78rem;border:1px solid #ccc;border-radius:4px;padding:3px 8px;font-family:inherit;outline:none;}
+.q-edit-card textarea{width:100%;border:1px solid #ccc;border-radius:4px;padding:8px 10px;font-family:inherit;font-size:0.88rem;resize:vertical;min-height:60px;outline:none;margin-bottom:8px;}
+.q-edit-card textarea:focus{border-color:#1a237e;}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.opt-edit-row{display:flex;align-items:center;gap:6px;}
+.opt-edit-row input[type=radio]{accent-color:#2e7d32;width:15px;height:15px;flex-shrink:0;}
+.opt-edit-row input[type=text]{flex:1;border:1px solid #ccc;border-radius:4px;padding:7px 10px;font-family:inherit;font-size:0.84rem;outline:none;}
+.opt-edit-row input[type=text]:focus{border-color:#1a237e;}
+.opt-correct-label{font-size:0.7rem;color:#2e7d32;font-weight:600;}
+.admin-save-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.btn-save{background:linear-gradient(135deg,#2e7d32,#388e3c);color:#fff;border:none;border-radius:4px;padding:10px 28px;font-family:inherit;font-size:0.9rem;font-weight:700;cursor:pointer;}
+.btn-save:hover{opacity:0.9;}
+.save-status{font-size:0.82rem;color:#2e7d32;font-weight:600;display:none;}
+.save-status.show{display:inline;}
+.admin-pwd-section{background:#fff;border:1px solid #ddd;border-radius:8px;padding:22px;margin-bottom:20px;}
+.admin-pwd-section h2{font-size:0.95rem;font-weight:700;color:#b71c1c;border-bottom:2px solid #b71c1c;padding-bottom:8px;margin-bottom:16px;}
+.pwd-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.pwd-row input{border:1.5px solid #ccc;border-radius:4px;padding:9px 14px;font-family:inherit;font-size:0.88rem;outline:none;width:220px;}
+.pwd-row input:focus{border-color:#1a237e;}
+.btn-change-pwd{background:#b71c1c;color:#fff;border:none;border-radius:4px;padding:9px 22px;font-family:inherit;font-size:0.88rem;font-weight:700;cursor:pointer;}
+.pwd-msg{font-size:0.82rem;font-weight:600;display:none;}
+.pwd-msg.show{display:inline;}
+.pwd-msg.ok{color:#2e7d32;}.pwd-msg.err{color:#c62828;}
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.85);z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+.loading-overlay.show{display:flex;}
+.spinner{width:36px;height:36px;border:4px solid #e8eaf6;border-top-color:#1a237e;border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:0.88rem;color:#555;font-weight:600;}
+@media(max-width:600px){
+  .gallery-grid{grid-template-columns:1fr;}
+  .info-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .opts-grid{grid-template-columns:1fr;}
+  .final-score-row{gap:10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">Loading...</div>
+</div>
+
+<!-- ADMIN LOGIN OVERLAY -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-login-box">
+    <h2>🔐 Admin Access</h2>
+    <p>Enter the admin password to manage quiz questions</p>
+    <div class="admin-error" id="admin-error">Incorrect password. Try again.</div>
+    <input type="password" id="admin-pwd-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doAdminLogin()"/>
+    <button class="btn-admin-login" onclick="doAdminLogin()">Login →</button>
+    <button class="btn-admin-cancel" onclick="closeAdminLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: PORTAL ═══ -->
+<div id="screen-portal" class="screen active">
+  <div class="gov-header">
+    <div class="gov-header-top">
+      <div class="gov-emblem">🏛️</div>
+      <div class="gov-title-block">
+        <h1>Regional Science Centre, Bhuj</h1>
+        <p>Ministry of Culture, Government of India &nbsp;|&nbsp; Science Explorer Initiative</p>
+      </div>
+    </div>
+    <div class="gov-nav">
+      <span class="gov-nav-title">🔬 Science Explorer Quiz Portal</span>
+      <span class="gov-nav-right">Visitor Portal <span class="admin-link" onclick="openAdminLogin()">Admin</span></span>
+    </div>
+  </div>
+  <div class="portal-body">
+    <div class="hero-card">
+      <h2>🏛️ Welcome to the RSC Bhuj Quiz Portal</h2>
+      <p>Scan the QR code at each gallery and take that gallery's quiz. Answer 9 questions and earn a digital certificate. Good luck, Science Explorer!</p>
+    </div>
+    <div class="section-title">📋 Select Your Gallery Quiz</div>
+    <div class="gallery-grid" id="portal-gallery-grid">
+      <!-- filled by JS -->
+    </div>
+    <div class="footer-bar">Regional Science Centre, Bhuj &nbsp;·&nbsp; Ministry of Culture, Government of India &nbsp;·&nbsp; Inspiring Young Scientific Minds</div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: QUIZ LANDING ═══ -->
+<div id="screen-quiz-landing" class="screen">
+  <div class="gov-header">
+    <div class="gov-header-top">
+      <div class="gov-emblem">🏛️</div>
+      <div class="gov-title-block">
+        <h1>Regional Science Centre, Bhuj</h1>
+        <p>Ministry of Culture, Government of India &nbsp;|&nbsp; Science Explorer Initiative</p>
+      </div>
+    </div>
+    <div class="gov-nav">
+      <span class="gov-nav-title" id="ql-nav-title">Gallery Quiz</span>
+      <span class="gov-nav-right">Visitor Quiz Portal</span>
+    </div>
+  </div>
+  <div class="quiz-land-body">
+    <button class="back-btn" onclick="showScreen('portal')">← Back to Portal</button>
+    <div class="notice-box">
+      <div class="ni">ℹ️</div>
+      <p id="ql-notice"><strong>Important:</strong> This quiz has 9 questions. Click an option to proceed. No changes after selection.</p>
+    </div>
+    <div class="info-card">
+      <h2 id="ql-title">Quiz Overview</h2>
+      <div class="info-grid">
+        <div class="info-item"><div class="iicon" id="ql-icon">🔬</div><div><div class="ilabel">Gallery</div><div class="ival" id="ql-gallery-name">—</div></div></div>
+        <div class="info-item"><div class="iicon">📝</div><div><div class="ilabel">Questions</div><div class="ival">9 Questions</div></div></div>
+        <div class="info-item"><div class="iicon">⭐</div><div><div class="ilabel">Maximum Marks</div><div class="ival">18 Points</div></div></div>
+        <div class="info-item"><div class="iicon">⏱️</div><div><div class="ilabel">Time per Question</div><div class="ival">30 Seconds</div></div></div>
+      </div>
+    </div>
+    <div class="form-card">
+      <h2>👤 Candidate Details</h2>
+      <div class="form-row">
+        <div class="form-group"><label>Full Name <span>*</span></label><input type="text" id="inp-name" placeholder="Enter your full name" maxlength="60"/></div>
+        <div class="form-group"><label>Age</label><input type="number" id="inp-age" placeholder="Enter age" min="5" max="99"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>School / Organization</label><input type="text" id="inp-org" placeholder="School / College / Institution" maxlength="80"/></div>
+        <div class="form-group"><label>City</label><input type="text" id="inp-city" placeholder="Enter your city" maxlength="40"/></div>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="agree-check"/>
+        <label for="agree-check">I have read the instructions and agree to attempt the quiz honestly. I understand that once an option is selected, it cannot be changed.</label>
+      </div>
+      <div style="text-align:center"><button class="btn-start" onclick="startQuiz()">Start Quiz &nbsp;→</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: QUIZ ═══ -->
+<div id="screen-quiz" class="screen">
+  <div class="gov-header">
+    <div class="gov-header-top">
+      <div class="gov-emblem">🏛️</div>
+      <div class="gov-title-block"><h1>Regional Science Centre, Bhuj</h1><p>Ministry of Culture, Government of India</p></div>
+    </div>
+    <div class="gov-nav">
+      <span class="gov-nav-title" id="quiz-nav-title">Gallery Quiz</span>
+      <span class="gov-nav-right">Visitor Quiz Portal</span>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-progress-bar">
+      <div class="qpb-top">
+        <span class="qpb-gal" id="qpb-gal">Gallery</span>
+        <span class="qpb-count" id="qpb-count">Q 1 of 9</span>
+        <span class="qpb-timer" id="qpb-timer">0:30</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="q-card" id="q-card">
+      <div class="q-card-header">
+        <span class="q-num-badge" id="qh-num">Q 1</span>
+        <span class="q-diff-badge" id="qh-diff">Easy</span>
+        <span class="q-pts" id="qh-pts">1 Point</span>
+      </div>
+      <div class="q-text" id="q-text">Loading...</div>
+      <div class="options-list" id="options-list"></div>
+      <div class="next-hint" id="next-hint">⏳ Moving to next question...</div>
+    </div>
+    <div class="gal-result" id="gal-result" style="display:none">
+      <div style="font-size:3.5rem;margin-bottom:10px;" id="gr-icon">🎉</div>
+      <h2 id="gr-title" style="font-size:1.3rem;font-weight:700;color:#1a237e;margin-bottom:6px;">Quiz Complete!</h2>
+      <div class="gal-score-big" id="gr-score">0</div>
+      <div class="gal-score-sub">out of 18 points</div>
+      <div class="score-breakdown">
+        <div class="sb-item"><div class="sb-label">🟢 Easy</div><div class="sb-val" id="gr-easy">0/3</div></div>
+        <div class="sb-item"><div class="sb-label">🟡 Medium</div><div class="sb-val" id="gr-med">0/6</div></div>
+        <div class="sb-item"><div class="sb-label">🔴 Hard</div><div class="sb-val" id="gr-hard">0/9</div></div>
+      </div>
+      <button class="btn-cert" onclick="showThankYou()">Get Certificate 🎓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: THANK YOU ═══ -->
+<div id="screen-thankyou" class="screen">
+  <div class="gov-header">
+    <div class="gov-header-top">
+      <div class="gov-emblem">🏛️</div>
+      <div class="gov-title-block"><h1>Regional Science Centre, Bhuj</h1><p>Ministry of Culture, Government of India</p></div>
+    </div>
+    <div class="gov-nav"><span class="gov-nav-title">🎓 Certificate</span></div>
+  </div>
+  <div class="ty-body">
+    <div class="ty-card">
+      <div class="ty-icon">🎓</div>
+      <div class="ty-title" id="ty-title">Congratulations!</div>
+      <div class="ty-sub" id="ty-sub">You have completed the gallery quiz at RSC Bhuj.</div>
+      <div class="final-score-row">
+        <div class="fs-box"><div class="fs-label">Total Score</div><div class="fs-val" id="ty-total">0/18</div></div>
+        <div class="fs-box"><div class="fs-label">Accuracy</div><div class="fs-val" id="ty-pct">0%</div></div>
+        <div class="fs-box"><div class="fs-label">Grade</div><div class="fs-val" id="ty-grade">—</div></div>
+      </div>
+      <button class="btn-dl" onclick="downloadCert()">⬇️ Download Certificate</button>
+    </div>
+    <div class="cert-preview-wrap">
+      <div class="cert-preview-title">📜 Your Certificate</div>
+      <canvas id="certCanvas" width="1000" height="720"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN: ADMIN ═══ -->
+<div id="screen-admin" class="screen">
+  <div class="admin-header">
+    <h1>🔐 Admin Panel — RSC Bhuj Quiz Manager</h1>
+    <button class="btn-logout" onclick="logoutAdmin()">Logout</button>
+  </div>
+  <div class="admin-body">
+
+    <!-- QR URLs -->
+    <div class="admin-section">
+      <h2>🔗 QR Code URLs — Share these with your QR generator</h2>
+      <p style="font-size:0.8rem;color:#555;margin-bottom:14px;">Use each URL below at <strong>qr-code-generator.com</strong> to generate a QR code for that gallery. Replace <code>YOUR-USERNAME</code> and <code>YOUR-REPO</code> with your actual GitHub details.</p>
+      <div id="qr-urls-list"></div>
+    </div>
+
+    <!-- Change Password -->
+    <div class="admin-pwd-section">
+      <h2>🔑 Change Admin Password</h2>
+      <div class="pwd-row">
+        <input type="password" id="new-pwd-1" placeholder="New password"/>
+        <input type="password" id="new-pwd-2" placeholder="Confirm new password"/>
+        <button class="btn-change-pwd" onclick="changePassword()">Update Password</button>
+        <span class="pwd-msg" id="pwd-msg"></span>
+      </div>
+    </div>
+
+    <!-- Gallery selector -->
+    <div class="admin-section">
+      <h2>✏️ Edit Questions</h2>
+      <div class="gallery-tabs" id="admin-gallery-tabs"></div>
+      <div id="admin-questions-editor"></div>
+      <div class="admin-save-row">
+        <button class="btn-save" onclick="saveQuestions()">💾 Save Questions</button>
+        <span class="save-status" id="save-status">✅ Saved successfully!</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="qr-hidden" style="position:fixed;top:-9999px;left:-9999px;background:#fff;"></div>
+
+<script>
+// ══════════════════════════════════════════
+// DEFAULT QUESTIONS DATA
+// ══════════════════════════════════════════
+const DEFAULT_GALLERIES = [
+  {id:1,name:"Marine Navigation",icon:"🌊",color:"#00b4d8",questions:[
+    {d:"easy",q:"What is the largest ocean on Earth?",opts:["Atlantic Ocean","Indian Ocean","Pacific Ocean","Arctic Ocean"],ans:2},
+    {d:"easy",q:"What do fish use to breathe underwater?",opts:["Lungs","Gills","Skin","Fins"],ans:1},
+    {d:"easy",q:"Which animal is the largest mammal on Earth?",opts:["Great White Shark","Dolphin","Blue Whale","Giant Squid"],ans:2},
+    {d:"medium",q:"What percentage of Earth's surface is covered by oceans?",opts:["About 51%","About 61%","About 71%","About 81%"],ans:2},
+    {d:"medium",q:"Which phenomenon causes coral bleaching worldwide?",opts:["Ocean acidification","Rising sea temperature","Oil spills","Overfishing"],ans:1},
+    {d:"medium",q:"Bioluminescence in marine creatures is produced by which process?",opts:["Photosynthesis","Chemiluminescence","Phosphorescence","Fluorescence"],ans:1},
+    {d:"hard",q:"The deepest point on Earth — Challenger Deep — is located in which trench?",opts:["Java Trench","Puerto Rico Trench","Mariana Trench","Tonga Trench"],ans:2},
+    {d:"hard",q:"What type of symbiotic relationship exists between clownfish and sea anemones?",opts:["Parasitism","Commensalism","Mutualism","Amensalism"],ans:2},
+    {d:"hard",q:"What is the approximate depth range of the 'midnight zone' (bathypelagic zone)?",opts:["200–1000m","1000–4000m","4000–6000m","6000–11000m"],ans:1}
+  ]},
+  {id:2,name:"Energy",icon:"⚡",color:"#e65100",questions:[
+    {d:"easy",q:"Which of these is a renewable source of energy?",opts:["Coal","Natural Gas","Solar Energy","Petroleum"],ans:2},
+    {d:"easy",q:"What is the SI unit of energy?",opts:["Watt","Joule","Newton","Pascal"],ans:1},
+    {d:"easy",q:"Which device converts sunlight directly into electricity?",opts:["Wind turbine","Dynamo","Solar cell (photovoltaic cell)","Generator"],ans:2},
+    {d:"medium",q:"Which country generates the most wind energy in the world?",opts:["USA","Germany","China","India"],ans:2},
+    {d:"medium",q:"What is the typical efficiency range of commercial solar panels?",opts:["5–10%","15–22%","35–45%","60–70%"],ans:1},
+    {d:"medium",q:"Nuclear fission involves which of the following?",opts:["Joining of two light atoms","Splitting of a heavy atomic nucleus","Burning of coal at high temperature","Ionization of gas molecules"],ans:1},
+    {d:"hard",q:"The theoretical maximum efficiency limit of a solar cell is called:",opts:["Carnot limit","Shockley-Queisser limit","Brayton limit","Rankine limit"],ans:1},
+    {d:"hard",q:"In a hydrogen fuel cell, the main by-product of energy generation is:",opts:["Carbon dioxide","Nitrogen gas","Water (H₂O)","Methane"],ans:2},
+    {d:"hard",q:"Thermoelectric generators convert heat to electricity using which principle?",opts:["Seebeck effect","Peltier effect","Thomson effect","Hall effect"],ans:0}
+  ]},
+  {id:3,name:"Mathematics",icon:"📐",color:"#7209b7",questions:[
+    {d:"easy",q:"What is the value of π (pi) correct to 2 decimal places?",opts:["3.14","3.41","3.16","3.12"],ans:0},
+    {d:"easy",q:"Which number is both even and prime?",opts:["1","2","4","6"],ans:1},
+    {d:"easy",q:"The Fibonacci sequence begins as:",opts:["1, 2, 3, 5, 8","0, 1, 1, 2, 3","1, 3, 5, 7, 9","2, 4, 6, 8, 10"],ans:1},
+    {d:"medium",q:"What is the sum of interior angles of a regular hexagon?",opts:["540°","720°","900°","360°"],ans:1},
+    {d:"medium",q:"The Golden Ratio φ (phi) is approximately equal to:",opts:["1.414","1.618","2.718","3.141"],ans:1},
+    {d:"medium",q:"Which mathematician is known as the 'Prince of Mathematics'?",opts:["Euler","Newton","Carl Friedrich Gauss","Leibniz"],ans:2},
+    {d:"hard",q:"The Four Color Theorem states that any map on a plane can be colored using at most how many colors?",opts:["3 colors","4 colors","5 colors","6 colors"],ans:1},
+    {d:"hard",q:"Euler's identity e^(iπ) + 1 = 0 connects how many fundamental mathematical constants?",opts:["3","4","5","6"],ans:2},
+    {d:"hard",q:"Which of the following is a non-orientable surface with only one side and one edge?",opts:["Torus","Klein Bottle","Möbius Strip","Sphere"],ans:2}
+  ]},
+  {id:4,name:"Bonsai",icon:"🌿",color:"#2e7d32",questions:[
+    {d:"easy",q:"The art of Bonsai originated in which country?",opts:["Japan","China","India","Korea"],ans:1},
+    {d:"easy",q:"What is the primary purpose of pruning in bonsai cultivation?",opts:["To water the plant","To control shape and size","To add fertilizer","To prevent pests"],ans:1},
+    {d:"easy",q:"Which biological process do bonsai trees use to produce food from sunlight?",opts:["Respiration","Transpiration","Photosynthesis","Osmosis"],ans:2},
+    {d:"medium",q:"The wiring technique in bonsai is primarily used to:",opts:["Water the roots","Supply nutrients","Shape and train branches","Repot the tree"],ans:2},
+    {d:"medium",q:"Which soil property is most critical for healthy bonsai root development?",opts:["High clay content","Good drainage and aeration","High organic matter content","Sandy texture only"],ans:1},
+    {d:"medium",q:"In bonsai terminology, 'Nebari' refers to:",opts:["The root flare visible at soil surface","Trunk movement and taper","Branch structure design","Leaf size reduction"],ans:0},
+    {d:"hard",q:"The Japanese concept 'Wabi-Sabi' as applied to bonsai represents:",opts:["Perfect geometric symmetry","Beauty in imperfection and transience","Rapid accelerated growth","Bright and vibrant coloration"],ans:1},
+    {d:"hard",q:"Apical dominance in plants means the terminal (top) bud:",opts:["Grows slower than lateral buds","Suppresses the growth of lateral buds","Dies before lateral buds","Produces only flowers"],ans:1},
+    {d:"hard",q:"Which plant hormone primarily controls elongation growth in stems?",opts:["Cytokinin","Ethylene","Auxin (IAA)","Gibberellin"],ans:2}
+  ]},
+  {id:5,name:"Nano Particles",icon:"🔬",color:"#c62828",questions:[
+    {d:"easy",q:"1 nanometre (1 nm) is equal to:",opts:["10⁻⁶ metres","10⁻⁹ metres","10⁻¹² metres","10⁻³ metres"],ans:1},
+    {d:"easy",q:"Which scientific field studies matter and devices at the nanoscale?",opts:["Astronomy","Nanotechnology","Seismology","Geology"],ans:1},
+    {d:"easy",q:"Gold nanoparticles appear which color when dispersed in solution?",opts:["Yellow","Gold","Red or Purple","Green"],ans:2},
+    {d:"medium",q:"The very high surface-area-to-volume ratio of nanoparticles makes them especially useful in:",opts:["Building construction","Catalysis and targeted drug delivery","Cooking and food industry","Astronomical observations"],ans:1},
+    {d:"medium",q:"Carbon nanotubes are exceptionally known for their:",opts:["Electrical insulation properties","Radioactive properties","Extraordinary strength and electrical conductivity","High toxicity"],ans:2},
+    {d:"medium",q:"A quantum dot is a nanostructure that emits light based primarily on its:",opts:["Temperature only","Chemical composition alone","Size — due to quantum confinement effect","External magnetic field"],ans:2},
+    {d:"hard",q:"The Scanning Tunneling Microscope (STM) was co-invented by:",opts:["Feynman & Drexler","Gerd Binnig & Heinrich Rohrer","Curl & Kroto","Iijima & Dresselhaus"],ans:1},
+    {d:"hard",q:"Nanoparticles can pass through which critical biological barrier that most conventional drugs cannot cross?",opts:["Skin barrier","Blood-brain barrier","Intestinal wall","Lung membrane"],ans:1},
+    {d:"hard",q:"The phenomenon where nanoparticles convert absorbed light energy into heat is used in:",opts:["Solar cooling systems","Photothermal cancer therapy","Large-scale water purification","Food preservation"],ans:1}
+  ]},
+  {id:6,name:"Space",icon:"🚀",color:"#1565c0",questions:[
+    {d:"easy",q:"Which planet in our Solar System is known as the 'Red Planet'?",opts:["Venus","Mars","Jupiter","Saturn"],ans:1},
+    {d:"easy",q:"Approximately how long does light take to travel from the Sun to Earth?",opts:["About 2 minutes","About 8 minutes","About 20 minutes","About 1 hour"],ans:1},
+    {d:"easy",q:"A 'light year' is defined as:",opts:["The time for light to reach the Sun","The distance light travels in one year","The speed of light","The age of the universe"],ans:1},
+    {d:"medium",q:"The first human-made object confirmed to have left our Solar System was:",opts:["Voyager 1","Voyager 2","Pioneer 10","New Horizons"],ans:0},
+    {d:"medium",q:"Which space telescope was launched in December 2021 as the successor to the Hubble Space Telescope?",opts:["Chandra X-ray Observatory","Spitzer Space Telescope","James Webb Space Telescope","Kepler Space Telescope"],ans:2},
+    {d:"medium",q:"Dark matter is estimated to make up approximately what percentage of the total universe?",opts:["About 5%","About 27%","About 68%","About 50%"],ans:1},
+    {d:"hard",q:"The Chandrasekhar limit (~1.4 solar masses) defines the maximum mass at which a white dwarf remains stable. Beyond this limit, the star becomes:",opts:["A neutron star directly","A black hole directly","A Type Ia supernova","A red giant"],ans:2},
+    {d:"hard",q:"Hawking radiation is a theoretical phenomenon predicted to be emitted by:",opts:["Rotating pulsars","Neutron stars","Black holes (near the event horizon)","Radio quasars"],ans:2},
+    {d:"hard",q:"The Cosmic Microwave Background (CMB) radiation is a relic thermal emission from:",opts:["The formation of the first stars","The Big Bang — recombination epoch (~380,000 years after)","The formation of the first black holes","The emergence of dark energy"],ans:1}
+  ]}
+];
+
+// ══════════════════════════════════════════
+// STORAGE — uses localStorage (works offline, no server needed)
+// ══════════════════════════════════════════
+const STORAGE_KEY_GALLERIES = 'rsc_bhuj_galleries';
+const STORAGE_KEY_PWD = 'rsc_bhuj_admin_pwd';
+const DEFAULT_PASSWORD = 'RSCBhuj@2025';
+
+function loadGalleries() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY_GALLERIES);
+    return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_GALLERIES));
+  } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_GALLERIES)); }
+}
+
+function saveGalleries(data) {
+  localStorage.setItem(STORAGE_KEY_GALLERIES, JSON.stringify(data));
+}
+
+function getAdminPwd() {
+  return localStorage.getItem(STORAGE_KEY_PWD) || DEFAULT_PASSWORD;
+}
+
+function setAdminPwd(pwd) {
+  localStorage.setItem(STORAGE_KEY_PWD, pwd);
+}
+
+// ══════════════════════════════════════════
+// APP STATE
+// ══════════════════════════════════════════
+let galleries = loadGalleries();
+let currentGalIdx = 0;
+let adminGalTab = 0;
+
+let quizState = {
+  name:'', age:'', org:'', city:'',
+  galIdx: 0, qIdx: 0,
+  scores: {total:0, easy:0, medium:0, hard:0},
+  timer: null, timeLeft: 30
+};
+
+const PTS = {easy:1, medium:2, hard:3};
+const OPT_LABELS = ['A','B','C','D'];
+
+// ══════════════════════════════════════════
+// PORTAL
+// ══════════════════════════════════════════
+function renderPortal() {
+  galleries = loadGalleries();
+  const grid = document.getElementById('portal-gallery-grid');
+  grid.innerHTML = galleries.map((g,i) => `
+    <a class="gal-card" href="#" style="border-left-color:${g.color}" onclick="openQuizLanding(${i});return false;">
+      <div class="gal-card-icon">${g.icon}</div>
+      <div class="gal-card-num">Gallery ${g.id}</div>
+      <div class="gal-card-name">${g.name}</div>
+      <div class="gal-card-info">9 Questions · 18 Points · 30 sec/Q</div>
+    </a>
+  `).join('');
+}
+
+function openQuizLanding(galIdx) {
+  galleries = loadGalleries();
+  currentGalIdx = galIdx;
+  const g = galleries[galIdx];
+  document.getElementById('ql-nav-title').textContent = `${g.icon} Gallery ${g.id} — ${g.name}`;
+  document.getElementById('ql-title').textContent = `📋 Quiz Overview — ${g.icon} ${g.name}`;
+  document.getElementById('ql-icon').textContent = g.icon;
+  document.getElementById('ql-gallery-name').textContent = `Gallery ${g.id} — ${g.name}`;
+  document.getElementById('ql-notice').innerHTML = `<strong>Important Instructions:</strong> This quiz covers <strong>Gallery ${g.id} — ${g.name}</strong>. There are <strong>9 questions</strong> (3 Easy · 3 Medium · 3 Hard). Click on an option to proceed automatically. A <strong>digital certificate</strong> is generated on completion.`;
+  document.getElementById('inp-name').value = '';
+  document.getElementById('inp-age').value = '';
+  document.getElementById('inp-org').value = '';
+  document.getElementById('inp-city').value = '';
+  document.getElementById('agree-check').checked = false;
+  showScreen('quiz-landing');
+}
+
+// ══════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════
+function startQuiz() {
+  const nm = document.getElementById('inp-name').value.trim();
+  if (!nm) { alert('Please enter your full name.'); return; }
+  if (!document.getElementById('agree-check').checked) { alert('Please read and accept the instructions.'); return; }
+  quizState.name = nm;
+  quizState.age = document.getElementById('inp-age').value.trim();
+  quizState.org = document.getElementById('inp-org').value.trim();
+  quizState.city = document.getElementById('inp-city').value.trim();
+  quizState.qIdx = 0;
+  quizState.scores = {total:0, easy:0, medium:0, hard:0};
+  const g = galleries[currentGalIdx];
+  document.getElementById('quiz-nav-title').textContent = `${g.icon} Gallery ${g.id} — ${g.name}`;
+  document.getElementById('q-card').style.display = 'block';
+  document.getElementById('gal-result').style.display = 'none';
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const g = galleries[currentGalIdx];
+  const qs = g.questions;
+  const q = qs[quizState.qIdx];
+  document.getElementById('qpb-gal').textContent = `${g.icon} Gallery ${g.id} — ${g.name}`;
+  document.getElementById('qpb-count').textContent = `Question ${quizState.qIdx + 1} of ${qs.length}`;
+  document.getElementById('prog-fill').style.width = `${(quizState.qIdx / qs.length) * 100}%`;
+  clearTimer();
+  quizState.timeLeft = 30;
+  updateTimerDisplay();
+  quizState.timer = setInterval(() => {
+    quizState.timeLeft--;
+    updateTimerDisplay();
+    if (quizState.timeLeft <= 0) { clearTimer(); autoSelect(q); }
+  }, 1000);
+  const diffLabels = {easy:'Easy', medium:'Medium', hard:'Hard'};
+  const diffCls = {easy:'qd-easy', medium:'qd-medium', hard:'qd-hard'};
+  const pts = PTS[q.d];
+  document.getElementById('qh-num').textContent = `Q ${quizState.qIdx + 1}`;
+  const db = document.getElementById('qh-diff');
+  db.textContent = diffLabels[q.d]; db.className = 'q-diff-badge ' + diffCls[q.d];
+  document.getElementById('qh-pts').textContent = `${pts} Point${pts > 1 ? 's' : ''}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('next-hint').className = 'next-hint';
+  document.getElementById('options-list').innerHTML = q.opts.map((o, i) =>
+    `<div class="option-item" id="opt-${i}" onclick="selectAnswer(${i})">
+      <div class="opt-label">${OPT_LABELS[i]}</div>
+      <div class="opt-text">${o}</div>
+    </div>`).join('');
+}
+
+function updateTimerDisplay() {
+  const el = document.getElementById('qpb-timer');
+  el.textContent = `${Math.floor(quizState.timeLeft/60)}:${String(quizState.timeLeft%60).padStart(2,'0')}`;
+  el.className = 'qpb-timer' + (quizState.timeLeft <= 10 ? ' warning' : '');
+}
+
+function clearTimer() {
+  if (quizState.timer) { clearInterval(quizState.timer); quizState.timer = null; }
+}
+
+function selectAnswer(chosen) {
+  clearTimer();
+  const q = galleries[currentGalIdx].questions[quizState.qIdx];
+  const correct = q.ans;
+  const pts = PTS[q.d];
+  const isCorrect = chosen === correct;
+  document.querySelectorAll('.option-item').forEach(el => el.classList.add('disabled'));
+  document.getElementById(`opt-${chosen}`).classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) document.getElementById(`opt-${correct}`).classList.add('correct');
+  if (isCorrect) {
+    quizState.scores.total += pts;
+    if (q.d === 'easy') quizState.scores.easy += pts;
+    else if (q.d === 'medium') quizState.scores.medium += pts;
+    else quizState.scores.hard += pts;
+  }
+  document.getElementById('next-hint').className = 'next-hint show';
+  setTimeout(() => advanceQuestion(), 1200);
+}
+
+function autoSelect(q) {
+  document.querySelectorAll('.option-item').forEach(el => el.classList.add('disabled'));
+  document.getElementById(`opt-${q.ans}`).classList.add('correct');
+  const nh = document.getElementById('next-hint');
+  nh.className = 'next-hint show';
+  nh.textContent = '⏰ Time up! Moving to next question...';
+  setTimeout(() => advanceQuestion(), 1200);
+}
+
+function advanceQuestion() {
+  quizState.qIdx++;
+  const qs = galleries[currentGalIdx].questions;
+  if (quizState.qIdx >= qs.length) { showGalleryResult(); }
+  else { renderQuestion(); }
+}
+
+function showGalleryResult() {
+  clearTimer();
+  document.getElementById('q-card').style.display = 'none';
+  document.getElementById('gal-result').style.display = 'block';
+  const sc = quizState.scores;
+  const g = galleries[currentGalIdx];
+  const emoji = sc.total >= 15 ? '🌟' : sc.total >= 10 ? '🎉' : sc.total >= 6 ? '👍' : '💪';
+  document.getElementById('gr-icon').textContent = emoji;
+  document.getElementById('gr-title').textContent = `${g.icon} ${g.name} — Completed!`;
+  document.getElementById('gr-score').textContent = sc.total;
+  document.getElementById('gr-easy').textContent = `${sc.easy}/3`;
+  document.getElementById('gr-med').textContent = `${sc.medium}/6`;
+  document.getElementById('gr-hard').textContent = `${sc.hard}/9`;
+}
+
+function showThankYou() {
+  const sc = quizState.scores;
+  const pct = Math.round(sc.total / 18 * 100);
+  const grade = pct>=85?'A+':pct>=70?'A':pct>=55?'B+':pct>=40?'B':'C';
+  const g = galleries[currentGalIdx];
+  document.getElementById('ty-title').textContent = `Congratulations, ${quizState.name}!`;
+  document.getElementById('ty-sub').textContent = `You have completed the ${g.name} Gallery Quiz at RSC Bhuj. Your digital certificate is ready below.`;
+  document.getElementById('ty-total').textContent = `${sc.total}/18`;
+  document.getElementById('ty-pct').textContent = `${pct}%`;
+  document.getElementById('ty-grade').textContent = grade;
+  showScreen('thankyou');
+  launchConfetti();
+  setTimeout(() => generateCertificate(sc.total, pct, grade), 500);
+}
+
+// ══════════════════════════════════════════
+// CERTIFICATE
+// ══════════════════════════════════════════
+function generateCertificate(total, pct, grade) {
+  const g = galleries[currentGalIdx];
+  const canvas = document.getElementById('certCanvas');
+  const ctx = canvas.getContext('2d');
+  const W=1000, H=720;
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  const tg = ctx.createLinearGradient(0,0,W,0);
+  tg.addColorStop(0,'#1a237e'); tg.addColorStop(0.4,'#283593'); tg.addColorStop(0.7,'#1565c0'); tg.addColorStop(1,'#0277bd');
+  ctx.fillStyle=tg; ctx.fillRect(0,0,W,95);
+  ctx.fillStyle='#ff6f00'; ctx.fillRect(0,95,W,6);
+  const bg2 = ctx.createLinearGradient(0,0,W,0);
+  bg2.addColorStop(0,'#1a237e'); bg2.addColorStop(1,'#1565c0');
+  ctx.fillStyle=bg2; ctx.fillRect(0,H-55,W,55);
+  ctx.fillStyle='#ff6f00'; ctx.fillRect(0,H-58,W,3);
+  ctx.fillStyle='#1a237e'; ctx.fillRect(0,101,8,H-164); ctx.fillRect(W-8,101,8,H-164);
+  ctx.fillStyle='#e8eaf6'; ctx.fillRect(8,101,W-16,H-164);
+  ctx.beginPath(); ctx.arc(W/2,60,32,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,0.15)'; ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=2; ctx.stroke();
+  ctx.font='26px Arial'; ctx.textAlign='center'; ctx.fillStyle='#fff'; ctx.fillText('🏛️',W/2,68);
+  ctx.font='bold 14px Arial'; ctx.fillStyle='rgba(255,255,255,0.95)';
+  ctx.fillText('REGIONAL SCIENCE CENTRE, BHUJ',W/2,30);
+  ctx.font='11px Arial'; ctx.fillStyle='rgba(255,255,255,0.75)';
+  ctx.fillText('Ministry of Culture, Government of India  •  Science Explorer Initiative',W/2,47);
+  ctx.fillStyle='#ff6f00'; ctx.fillRect(W/2-80,108,160,4);
+  ctx.fillStyle='#fff'; ctx.fillRect(W/2-80,112,160,4);
+  ctx.fillStyle='#1a8400'; ctx.fillRect(W/2-80,116,160,4);
+  ctx.font='bold 40px Georgia'; ctx.fillStyle='#1a237e'; ctx.fillText('Certificate of Achievement',W/2,175);
+  const ul = ctx.createLinearGradient(120,0,W-120,0);
+  ul.addColorStop(0,'transparent'); ul.addColorStop(0.2,'#ff6f00'); ul.addColorStop(0.8,'#ff6f00'); ul.addColorStop(1,'transparent');
+  ctx.strokeStyle=ul; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(120,185); ctx.lineTo(W-120,185); ctx.stroke();
+  ctx.font='italic 17px Georgia'; ctx.fillStyle='#5c6bc0'; ctx.fillText('This is to certify that',W/2,218);
+  ctx.font='bold 50px Georgia';
+  const ng = ctx.createLinearGradient(0,0,W,0);
+  ng.addColorStop(0,'#1a237e'); ng.addColorStop(0.5,'#283593'); ng.addColorStop(1,'#1565c0');
+  ctx.fillStyle=ng; ctx.fillText(quizState.name,W/2,272);
+  let dp=[];
+  if(quizState.age) dp.push(`Age: ${quizState.age}`);
+  if(quizState.org) dp.push(quizState.org);
+  if(quizState.city) dp.push(quizState.city);
+  if(dp.length){ctx.font='14px Arial';ctx.fillStyle='#666';ctx.fillText(dp.join('  |  '),W/2,298);}
+  ctx.font='15px Georgia'; ctx.fillStyle='#333';
+  ctx.fillText(`has successfully completed the ${g.icon} ${g.name} Gallery Quiz`,W/2,335);
+  ctx.fillText('at Regional Science Centre, Bhuj — Science Explorer Initiative.',W/2,357);
+  ctx.fillStyle='#e8eaf6'; ctx.strokeStyle='#3949ab'; ctx.lineWidth=2;
+  roundRect(ctx,W/2-210,378,420,82,8,true,true);
+  ctx.font='bold 42px Arial'; ctx.fillStyle='#1a237e'; ctx.fillText(`${total} / 18`,W/2,422);
+  ctx.font='bold 13px Arial'; ctx.fillStyle='#5c6bc0';
+  ctx.fillText(`TOTAL SCORE  •  ${pct}% ACCURACY  •  GRADE: ${grade}`,W/2,448);
+  const now=new Date();
+  const ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+  ctx.font='12px Arial'; ctx.fillStyle='#666'; ctx.fillText(`Date of Issue: ${ds}`,W/2,510);
+  ctx.strokeStyle='#999'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(70,580); ctx.lineTo(270,580); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(380,580); ctx.lineTo(580,580); ctx.stroke();
+  ctx.font='11px Arial'; ctx.fillStyle='#555';
+  ctx.fillText('Quiz Coordinator',170,597); ctx.fillText('Director, RSC Bhuj',480,597);
+  const certId=`RSC-BHJ-G${g.id}-${Date.now().toString(36).toUpperCase().slice(-8)}`;
+  ctx.font='9px monospace'; ctx.fillStyle='rgba(255,255,255,0.6)';
+  ctx.fillText(`Certificate No: ${certId}`,W/2-100,H-22);
+  ctx.font='bold 11px Arial'; ctx.fillStyle='rgba(255,255,255,0.85)';
+  ctx.fillText('Regional Science Centre, Bhuj  •  Inspiring Young Scientific Minds',W/2,H-16);
+  const qrData=`RSC Bhuj | ${quizState.name} | Gallery ${g.id}: ${g.name} | Score:${total}/18 | Grade:${grade} | ID:${certId}`;
+  const qrHolder=document.getElementById('qr-hidden');
+  qrHolder.innerHTML='';
+  const qrX=858, qrY=470;
+  try{
+    new QRCode(qrHolder,{text:qrData,width:110,height:110,colorDark:'#1a237e',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+    function tryDraw(n){
+      const qc=qrHolder.querySelector('canvas');
+      const qi=qrHolder.querySelector('img');
+      if(qc){ctx.fillStyle='#fff';ctx.strokeStyle='#ccc';ctx.lineWidth=1;roundRect(ctx,qrX-6,qrY-6,122,122,4,true,true);ctx.drawImage(qc,qrX,qrY,110,110);ctx.font='8px Arial';ctx.fillStyle='#666';ctx.textAlign='center';ctx.fillText('Scan to Verify',qrX+55,qrY+122);}
+      else if(qi&&qi.complete&&qi.naturalWidth>0){ctx.fillStyle='#fff';ctx.strokeStyle='#ccc';ctx.lineWidth=1;roundRect(ctx,qrX-6,qrY-6,122,122,4,true,true);ctx.drawImage(qi,qrX,qrY,110,110);ctx.font='8px Arial';ctx.fillStyle='#666';ctx.textAlign='center';ctx.fillText('Scan to Verify',qrX+55,qrY+122);}
+      else if(n>0){setTimeout(()=>tryDraw(n-1),200);}
+    }
+    setTimeout(()=>tryDraw(15),400);
+  }catch(e){console.log('QR err',e);}
+}
+
+function roundRect(ctx,x,y,w,h,r,fill,stroke){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();if(fill)ctx.fill();if(stroke)ctx.stroke();
+}
+
+function downloadCert(){
+  const g=galleries[currentGalIdx];
+  const a=document.createElement('a');
+  a.download=`RSC_Bhuj_G${g.id}_${g.name.replace(/\s+/g,'_')}_${quizState.name.replace(/\s+/g,'_')}.png`;
+  a.href=document.getElementById('certCanvas').toDataURL('image/png');
+  a.click();
+}
+
+function launchConfetti(){
+  const colors=['#1a237e','#f72585','#06d6a0','#ffd60a','#7209b7','#c62828','#00b4d8'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='cp';
+    const s=6+Math.random()*10;
+    c.style.cssText=`width:${s}px;height:${s}px;background:${colors[i%colors.length]};left:${Math.random()*100}%;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*2}s`;
+    document.body.appendChild(c);setTimeout(()=>c.remove(),6000);
+  }
+}
+
+// ══════════════════════════════════════════
+// ADMIN LOGIN
+// ══════════════════════════════════════════
+function openAdminLogin(){
+  document.getElementById('admin-overlay').classList.add('show');
+  document.getElementById('admin-pwd-input').value='';
+  document.getElementById('admin-error').classList.remove('show');
+  setTimeout(()=>document.getElementById('admin-pwd-input').focus(),100);
+}
+
+function closeAdminLogin(){
+  document.getElementById('admin-overlay').classList.remove('show');
+}
+
+function doAdminLogin(){
+  const entered=document.getElementById('admin-pwd-input').value;
+  if(entered===getAdminPwd()){
+    closeAdminLogin();
+    openAdminPanel();
+  } else {
+    document.getElementById('admin-error').classList.add('show');
+    document.getElementById('admin-pwd-input').value='';
+    document.getElementById('admin-pwd-input').focus();
+  }
+}
+
+function logoutAdmin(){
+  showScreen('portal');
+  renderPortal();
+}
+
+// ══════════════════════════════════════════
+// ADMIN PANEL
+// ══════════════════════════════════════════
+function renderQrUrls(){
+  const base=window.location.origin+window.location.pathname;
+  document.getElementById('qr-urls-list').innerHTML=galleries.map(g=>`
+    <div style="background:#f8f9ff;border:1px solid #e3e8ff;border-radius:6px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <span style="font-size:1.4rem;">${g.icon}</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:0.78rem;font-weight:700;color:#1a237e;margin-bottom:3px;">Gallery ${g.id} — ${g.name}</div>
+        <code style="font-size:0.78rem;background:#e8eaf6;padding:3px 8px;border-radius:3px;color:#283593;word-break:break-all;">${base}?gallery=${g.id}</code>
+      </div>
+      <button onclick="navigator.clipboard.writeText('${base}?gallery=${g.id}').then(()=>alert('Copied! Paste into qr-code-generator.com'))" style="background:#1a237e;color:#fff;border:none;border-radius:4px;padding:6px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;white-space:nowrap;">📋 Copy</button>
+    </div>
+  `).join('');
+}
+
+function openAdminPanel(){
+  galleries=loadGalleries();
+  adminGalTab=0;
+  renderAdminTabs();
+  renderAdminEditor();
+  renderQrUrls();
+  showScreen('admin');
+}
+
+function renderAdminTabs(){
+  document.getElementById('admin-gallery-tabs').innerHTML=galleries.map((g,i)=>
+    `<button class="gtab${i===adminGalTab?' active':''}" onclick="switchAdminTab(${i})">${g.icon} Gallery ${g.id}</button>`
+  ).join('');
+}
+
+function switchAdminTab(i){
+  adminGalTab=i;
+  renderAdminTabs();
+  renderAdminEditor();
+  document.getElementById('save-status').classList.remove('show');
+}
+
+function renderAdminEditor(){
+  const g=galleries[adminGalTab];
+  document.getElementById('admin-questions-editor').innerHTML=g.questions.map((q,qi)=>`
+    <div class="q-edit-card">
+      <div class="q-edit-header">
+        <span class="q-edit-num">Q${qi+1}</span>
+        <select class="diff-select" id="diff-${qi}" onchange="">
+          <option value="easy"${q.d==='easy'?' selected':''}>🟢 Easy (1 pt)</option>
+          <option value="medium"${q.d==='medium'?' selected':''}>🟡 Medium (2 pts)</option>
+          <option value="hard"${q.d==='hard'?' selected':''}>🔴 Hard (3 pts)</option>
+        </select>
+      </div>
+      <textarea id="q-text-${qi}" placeholder="Enter question...">${q.q}</textarea>
+      <div class="opts-grid">
+        ${q.opts.map((o,oi)=>`
+          <div class="opt-edit-row">
+            <input type="radio" name="ans-${qi}" id="ans-${qi}-${oi}" value="${oi}"${q.ans===oi?' checked':''}>
+            <input type="text" id="opt-${qi}-${oi}" value="${o}" placeholder="Option ${OPT_LABELS[oi]}"/>
+          </div>
+        `).join('')}
+      </div>
+      <div style="font-size:0.72rem;color:#2e7d32;font-weight:600;">✅ Select the radio button next to the correct answer</div>
+    </div>
+  `).join('');
+}
+
+function saveQuestions(){
+  const g=galleries[adminGalTab];
+  let valid=true;
+  g.questions.forEach((q,qi)=>{
+    const qText=document.getElementById(`q-text-${qi}`).value.trim();
+    if(!qText){alert(`Question ${qi+1} cannot be empty!`);valid=false;return;}
+    const opts=[];
+    for(let oi=0;oi<4;oi++){
+      const ot=document.getElementById(`opt-${qi}-${oi}`).value.trim();
+      if(!ot){alert(`Q${qi+1} Option ${OPT_LABELS[oi]} cannot be empty!`);valid=false;return;}
+      opts.push(ot);
+    }
+    const ansEl=document.querySelector(`input[name="ans-${qi}"]:checked`);
+    if(!ansEl){alert(`Please select the correct answer for Q${qi+1}!`);valid=false;return;}
+    g.questions[qi]={
+      d:document.getElementById(`diff-${qi}`).value,
+      q:qText,
+      opts:opts,
+      ans:parseInt(ansEl.value)
+    };
+  });
+  if(!valid)return;
+  saveGalleries(galleries);
+  const ss=document.getElementById('save-status');
+  ss.classList.add('show');
+  setTimeout(()=>ss.classList.remove('show'),3000);
+}
+
+function changePassword(){
+  const p1=document.getElementById('new-pwd-1').value;
+  const p2=document.getElementById('new-pwd-2').value;
+  const msg=document.getElementById('pwd-msg');
+  msg.className='pwd-msg';
+  if(!p1||p1.length<6){msg.textContent='Password must be at least 6 characters.';msg.classList.add('show','err');return;}
+  if(p1!==p2){msg.textContent='Passwords do not match.';msg.classList.add('show','err');return;}
+  setAdminPwd(p1);
+  msg.textContent='✅ Password updated successfully!';
+  msg.classList.add('show','ok');
+  document.getElementById('new-pwd-1').value='';
+  document.getElementById('new-pwd-2').value='';
+  setTimeout(()=>msg.classList.remove('show'),4000);
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── URL PARAM — ?gallery=N opens that gallery directly ──
+function checkUrlParam(){
+  const params=new URLSearchParams(window.location.search);
+  const gParam=params.get('gallery');
+  if(gParam){
+    const idx=parseInt(gParam)-1;
+    if(idx>=0 && idx<galleries.length){openQuizLanding(idx);return;}
+  }
+  renderPortal();
+}
+// ── INIT ──
+checkUrlParam();
+</script>
+</body>
+</html>
